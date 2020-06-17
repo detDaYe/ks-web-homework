@@ -32,7 +32,7 @@
             <td th:text="${course.lesson.name}"></td>
 
             <!-- 인원 -->
-            <td th:text="${course.lesson.quota}"></td>
+            <td th:text="${course.lesson.quota} - ${course.lesson.getCourses().size()}"></td>
             <td>
                 <a href="#" class="btn btn-primary" role="button">수정</a>
             </td>

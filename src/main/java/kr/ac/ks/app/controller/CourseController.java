@@ -41,8 +41,21 @@ public class CourseController {
                                ) {
         Student student = studentRepository.findById(studentId).get();
         Lesson lesson = lessonRepository.findById(lessonId).get();
-        Course course = Course.createCourse(student,lesson);
-        Course savedCourse = courseRepository.save(course);
+
+        List<Course> temp = courseRepository.findByStudentAndLesson(student, lesson);
+        if(temp.size() == 0) {
+            Course course = Course.createCourse(student, lesson);
+            Course savedCourse = courseRepository.save(course);
+        }else if(temp.size() == lesson.getCourses().size()){
+            /*
+            * No more student!!
+            * */
+        }
+        else{
+            /*
+            * something for warning message
+            * */
+        }
         return "redirect:/courses";
     }
 
