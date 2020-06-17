@@ -2,12 +2,16 @@ package kr.ac.ks.app.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@ToString
 public class Lesson {
     @Id
     @GeneratedValue
@@ -16,11 +20,6 @@ public class Lesson {
     private String name;
     private int quota;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Course course;
-
-    public void setCourse(Course course) {
-        this.course = course;
-        this.course.getLessons().add(this);
-    }
+    @OneToMany(mappedBy = "lesson")
+    private List<Course> courses = new ArrayList<>();
 }

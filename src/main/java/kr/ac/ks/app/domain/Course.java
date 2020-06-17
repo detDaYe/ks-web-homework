@@ -18,23 +18,23 @@ public class Course {
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
 
-    @OneToMany(mappedBy = "course")
-    private List<Lesson> lessons = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Lesson lesson;
 
     public void setStudent(Student student) {
         this.student = student;
         this.student.getCourses().add(this);
     }
 
-    public void addLesson(Lesson lesson) {
-        this.lessons.add(lesson);
-        lesson.setCourse(this);
+    public void setLesson(Lesson lesson){
+        this.lesson = lesson;
+        this.lesson.getCourses().add(this);
     }
 
     public static Course createCourse(Student student, Lesson lesson) {
         Course course = new Course();
         course.setStudent(student);
-        course.addLesson(lesson);
+        course.setLesson(lesson);
         return course;
     }
 }

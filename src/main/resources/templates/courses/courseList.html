@@ -11,7 +11,7 @@
             <th>#</th>
             <th>학생명</th>
             <th>수업명</th>
-            <th>인원</th>
+            <th>수강가능인원</th>
             <th>수정</th>
             <th>삭제</th>
         </tr>
@@ -20,8 +20,19 @@
         <tr th:each="course : ${courses}">
             <td th:text="${course.id}"></td>
             <td th:text="${course.student.name}"></td>
-            <td th:text="${course.lessons[0].name}"></td>
-            <td th:text="${course.lessons[0].quota}"></td>
+
+            <!--option th:if="${course.lessons.size()} == 0">
+                <td>뀨</td>
+                <td>호애애</td>
+            </option>
+            <option th:unless="${course.lessons.size()} == 0">
+                <td th:text="${course.lessons[0].name}"></td>
+                <td th:text="${course.lessons[0].quota}"></td>
+            </option-->
+            <td th:text="${course.lesson.name}"></td>
+
+            <!-- 인원 -->
+            <td th:text="${course.lesson.quota}"></td>
             <td>
                 <a href="#" class="btn btn-primary" role="button">수정</a>
             </td>
