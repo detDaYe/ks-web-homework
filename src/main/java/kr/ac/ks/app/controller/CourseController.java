@@ -8,10 +8,13 @@ import kr.ac.ks.app.repository.LessonRepository;
 import kr.ac.ks.app.repository.StudentRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -64,6 +67,37 @@ public class CourseController {
         List<Course> courses = courseRepository.findAll();
         model.addAttribute("courses", courses);
         return "courses/courseList";
+    }
+
+    @GetMapping("/course/update/{id}")
+    public String courseUpdateForm(@PathVariable("id") Long courseId, Model model){
+        Course course = courseRepository.findById(courseId).get();
+        model.addAttribute("course", course);
+        model.addAttribute("lessons", lessonRepository.findAll());
+        model.addAttribute("students", studentRepository.findAll());
+        return "courses/courseUpdateForm";
+        //templates\courses\courseUpdateForm.html
+    }
+
+    @PostMapping("/course/update/{id}")
+    public String updateCourse(@PathVariable("id") Long courseId, @RequestParam("studentId") Long studentId,
+                               @RequestParam("lessonId") Long lessonId, @Valid CourseForm courseForm, BindingResult result){
+        Course course = courseRepository.findById(courseId).get();
+        Lesson lesson = lessonRepository.findById(lessonId).get();
+        Student student = studentRepository.findById(studentId).get();
+
+        course.setLesson(lesson);
+        course.setStudent(student);
+
+        courseRepository.save(course);
+        return "redirect:/courses";
+    }
+
+    @PostMapping("/course/delete/{id}")
+    public String deleteCourse(@PathVariable("id") Long id){
+        Course course = courseRepository.findById(id).get();
+        courseRepository.delete(course);
+        return "redirect:/courses";
     }
 
 }

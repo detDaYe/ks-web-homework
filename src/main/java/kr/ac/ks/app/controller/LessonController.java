@@ -1,12 +1,15 @@
 package kr.ac.ks.app.controller;
 
 import kr.ac.ks.app.domain.Lesson;
+import kr.ac.ks.app.domain.Student;
 import kr.ac.ks.app.repository.LessonRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -25,7 +28,10 @@ public class LessonController {
     }
 
     @PostMapping(value = "/lessons/new")
-    public String create(LessonForm form) {
+    public String create(@Valid LessonForm form, BindingResult result) {
+        if (result.hasErrors()) {
+            return "lessons/lessonForm";
+        }
         Lesson lesson = new Lesson();
         lesson.setName(form.getName());
         lesson.setQuota(form.getQuota());
@@ -39,4 +45,6 @@ public class LessonController {
         model.addAttribute("lessons", lessons);
         return "lessons/lessonList";
     }
+
+
 }
