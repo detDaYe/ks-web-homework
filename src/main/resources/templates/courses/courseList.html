@@ -32,7 +32,9 @@
             <td th:text="${course.lesson.name}"></td>
 
             <!-- 인원 -->
-            <td th:text="${course.lesson.quota} - ${course.lesson.getCourses().size()}"></td>
+            <td
+                    th:style="${course.lesson.quota} - ${course.lesson.getCourses().size()} == 0 ? 'color: red;' : 'color: black;'"
+                    th:text="${course.lesson.quota} - ${course.lesson.getCourses().size()}"></td>
             <td>
                 <!--a href="#" class="btn btn-primary" role="button" methods="get">수정</a-->
                 <a th:href="@{/course/update/{id}(id=${course.id})}"><input type="button" value="update"></a>
